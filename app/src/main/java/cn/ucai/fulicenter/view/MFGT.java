@@ -14,4 +14,7 @@ public class MFGT {
         context.startActivity(new Intent(context,clr));
         context.overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
     }
+    public static void finshActivity(Activity context){
+        context.finish();
+    }
 }
