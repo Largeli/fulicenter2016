@@ -9,8 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cn.ucai.fulicenter.controller.activity.RegisterActivity"
-    android:background="@drawable/ease_edit_text_bg"
-    android:orientation="vertical">
+    android:background="@drawable/ease_timestampe_bg"
+    android:orientation="vertical"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,5 +33,22 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="fill_vertical"
+        android:background="#fff">
+        <TextView
+            android:text="用户名"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="30dp" />
+    </LinearLayout>
 </LinearLayout>
