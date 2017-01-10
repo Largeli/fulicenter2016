@@ -10,6 +10,7 @@
         android:layout_weight="1"/>
 
     <RadioGroup
+        android:id="@+id/rg_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -24,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:onClick="onCheckChanged"/>
+            />
         <RadioButton
             android:id="@+id/rb_Boutique"
             android:text="精选"

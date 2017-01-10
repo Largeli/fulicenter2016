@@ -2,8 +2,8 @@ package cn.ucai.fulicenter.controller.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     RadioButton rbCart;
     @BindView(R.id.rb_Personal_center)
     RadioButton rbPersonalCenter;
+    @BindView(R.id.rg_footer)
+    RadioGroup rgFooter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-        setRadioStatus();
+        //setRadioStatus();
+
     }
 
     private void initView() {
@@ -40,9 +43,32 @@ public class MainActivity extends AppCompatActivity {
         rb[2] = rbCategory;
         rb[3] = rbCart;
         rb[4] = rbPersonalCenter;
+        ((RadioButton)rgFooter.getChildAt(0)).setChecked(true);
+        rgFooter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_NewGoods:
+                        index = 0;
+                        break;
+                    case R.id.rb_Boutique:
+                        index = 1;
+                        break;
+                    case R.id.rb_Category:
+                        index = 2;
+                        break;
+                    case R.id.rb_Cart:
+                        index = 3;
+                        break;
+                    case R.id.rb_Personal_center:
+                        index = 4;
+                        break;
+                }
+            }
+        });
     }
 
-    public void onCheckChanged(View view) {
+    /*public void onCheckChanged(View view) {
         switch (view.getId()) {
             case R.id.rb_NewGoods:
                 index = 0;
@@ -64,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
             setRadioStatus();
         }
         index = currentindex;
-    }
+    }*/
 
-    public void setRadioStatus() {
+    /*public void setRadioStatus() {
         for (int i = 0; i < rb.length; i++) {
             if (i != index) {
                 rb[i].setChecked(false);
@@ -74,5 +100,5 @@ public class MainActivity extends AppCompatActivity {
                 rb[i].setChecked(true);
             }
         }
-    }
+    }*/
 }
