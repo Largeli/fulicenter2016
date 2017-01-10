@@ -5,36 +5,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 
 public class MainActivity extends AppCompatActivity {
-    RadioButton rb_NewGoods,rb_Boutique,rb_Category,rb_Cart,rb_Personal_center;
-    int index ,currentindex;
+    int index, currentindex;
     RadioButton[] rb;
+    @BindView(R.id.rb_NewGoods)
+    RadioButton rbNewGoods;
+    @BindView(R.id.rb_Boutique)
+    RadioButton rbBoutique;
+    @BindView(R.id.rb_Category)
+    RadioButton rbCategory;
+    @BindView(R.id.rb_Cart)
+    RadioButton rbCart;
+    @BindView(R.id.rb_Personal_center)
+    RadioButton rbPersonalCenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initView();
         setRadioStatus();
     }
 
     private void initView() {
-        rb_NewGoods = (RadioButton) findViewById(R.id.rb_NewGoods);
-        rb_Boutique = (RadioButton) findViewById(R.id.rb_Boutique);
-        rb_Category = (RadioButton) findViewById(R.id.rb_Category);
-        rb_Cart = (RadioButton) findViewById(R.id.rb_Cart);
-        rb_Personal_center = (RadioButton) findViewById(R.id.rb_Personal_center);
 
         rb = new RadioButton[5];
-        rb[0] = rb_NewGoods;
-        rb[1] = rb_Boutique;
-        rb[2] = rb_Category;
-        rb[3] = rb_Cart;
-        rb[4] = rb_Personal_center;
+        rb[0] = rbNewGoods;
+        rb[1] = rbBoutique;
+        rb[2] = rbCategory;
+        rb[3] = rbCart;
+        rb[4] = rbPersonalCenter;
     }
-    public void onCheckChanged(View view){
-        switch (view.getId()){
+
+    public void onCheckChanged(View view) {
+        switch (view.getId()) {
             case R.id.rb_NewGoods:
                 index = 0;
                 break;
@@ -54,13 +63,14 @@ public class MainActivity extends AppCompatActivity {
         if (index != currentindex) {
             setRadioStatus();
         }
-        index=currentindex;
+        index = currentindex;
     }
-    public void setRadioStatus(){
-        for(int i=0; i<rb.length;i++){
+
+    public void setRadioStatus() {
+        for (int i = 0; i < rb.length; i++) {
             if (i != index) {
                 rb[i].setChecked(false);
-            }else {
+            } else {
                 rb[i].setChecked(true);
             }
         }
