@@ -1,4 +1,4 @@
-package cn.ucai.fulishop.bean;
+package cn.ucai.fulicenter.model.bean;
 
 import java.io.Serializable;
 
