@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_Buotique"
+            android:src="@drawable/nopic"
+            android:scaleType="fitXY"
+            android:layout_width="200dp"
+            android:layout_height="250dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_Boutique_title"
+                android:text="第一行"
+                android:textSize="18sp"
+                android:textColor="@color/list_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_Boutique_name"
+                android:text="第二行"
+                android:textSize="25sp"
+                android:textColor="@color/list_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_Boutique_des"
+                android:text="第三行"
+                android:textSize="18sp"
+                android:textColor="@color/list_item_des"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
