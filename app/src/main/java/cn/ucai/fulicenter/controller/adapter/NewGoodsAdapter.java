@@ -11,27 +11,37 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
-import cn.ucai.fulicenter.model.net.IModelContact;
-import cn.ucai.fulicenter.model.utils.OkImageLoader;
+import cn.ucai.fulicenter.model.net.IModelNewGoods;
 
 /**
  * Created by Administrator on 2017/1/10 0010.
  */
 
-public class NewGoodsAdapter extends RecyclerView.Adapter{
+public class NewGoodsAdapter extends RecyclerView.Adapter {
     static final int TYPE_ITEM = 0;
     static final int TYPE_FOOTER = 1;
     ArrayList<NewGoodsBean> arrayList;
     Context context;
     String footer;
-    boolean isMore;
+    boolean isMore=true;
     boolean isDragging;
-    IModelContact model;
-    public NewGoodsAdapter(ArrayList<NewGoodsBean> arrayList, Context context) {
+    IModelNewGoods model;
+
+    public NewGoodsAdapter(ArrayList<NewGoodsBean> arrayList, Context context,IModelNewGoods model) {
         this.arrayList = arrayList;
         this.context = context;
+        this.model=model;
+    }
+
+    public void initData(ArrayList<NewGoodsBean> arrayList) {
+        this.arrayList.clear();
+        addData(arrayList);
+    }
+
+    public void addData(ArrayList<NewGoodsBean> arrayList) {
+        this.arrayList.addAll(arrayList);
+        notifyDataSetChanged();
     }
 
     public String getFooter() {
@@ -40,6 +50,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter{
 
     public void setFooter(String footer) {
         this.footer = footer;
+        notifyDataSetChanged();
     }
 
     public boolean isMore() {
@@ -48,6 +59,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter{
 
     public void setMore(boolean more) {
         isMore = more;
+        notifyDataSetChanged();
     }
 
     public boolean isDragging() {
@@ -56,70 +68,74 @@ public class NewGoodsAdapter extends RecyclerView.Adapter{
 
     public void setDragging(boolean dragging) {
         isDragging = dragging;
+        notifyDataSetChanged();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View  layout ;
+        View layout;
+        RecyclerView.ViewHolder holder = null;
         switch (viewType) {
             case TYPE_FOOTER:
-                layout = layoutInflater.inflate(R.layout.item_newgoods_footer,null);
-                return new FooterViewHolder(layout);
+                layout = layoutInflater.inflate(R.layout.item_newgoods_footer, null);
+                holder = new FooterViewHolder(layout);
+                break;
             case TYPE_ITEM:
-                layout = layoutInflater.inflate(R.layout.item_newgoods_contact,null);
-                return new ContactViewHolder(layout);
+                layout = layoutInflater.inflate(R.layout.item_newgoods_contact, null);
+                holder = new ContactViewHolder(layout);
+                break;
         }
-
-        return null;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder parentholder, int position) {
         if (position == getItemCount() - 1) {
             FooterViewHolder holder = (FooterViewHolder) parentholder;
-            holder.tvfooter.setText(getFooter());
+            holder.tvfooter.setText(isMore?"上拉加载更多":"没有更多数据");
             return;
         }
         ContactViewHolder holder = (ContactViewHolder) parentholder;
-       NewGoodsBean contact = arrayList.get(position);
+        NewGoodsBean contact = arrayList.get(position);
         holder.tvName.setText(contact.getGoodsName());
         holder.tvMuch.setText(contact.getCurrencyPrice());
-        //model.downloadNewgoodsList(context,contact.getGoodsName(),contact.);
-        OkImageLoader.build(I.SERVER_ROOT+I.REQUEST_DOWNLOAD_IMAGE)
-                .addParam(I.IMAGE_URL,contact.getGoodsImg())
-                .defaultPicture(R.drawable.nopic)
-                .imageView(holder.ivAvatar)
-                .showImage(context);
+        model.downloadnewgoodsImage(context,contact.getGoodsImg(),R.drawable.nopic,holder.ivAvatar);
+        //Log.e("main",)
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size()+1;
+        return arrayList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position==getItemCount()-1){return TYPE_FOOTER;}
+        if (position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        }
         return TYPE_ITEM;
     }
 
-    class FooterViewHolder  extends RecyclerView.ViewHolder {
+    class FooterViewHolder extends RecyclerView.ViewHolder {
         TextView tvfooter;
+
         public FooterViewHolder(View itemView) {
             super(itemView);
             tvfooter = (TextView) itemView.findViewById(R.id.tv_newgoods_footer);
         }
     }
+
     class ContactViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
         TextView tvName;
         TextView tvMuch;
+
         public ContactViewHolder(View itemView) {
             super(itemView);
             ivAvatar = (ImageView) itemView.findViewById(R.id.iv_Newgood_Avatar);
             tvName = (TextView) itemView.findViewById(R.id.tv_Newgood_Name);
-            tvMuch = (TextView) itemView.findViewById(R.id.tv_Newgood_much);
+            tvMuch = (TextView) itemView.findViewById(R.id.tv_Newgood_Price);
         }
     }
 }
