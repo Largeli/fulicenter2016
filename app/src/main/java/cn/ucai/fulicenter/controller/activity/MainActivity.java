@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.controller.fragment.CartFragment;
 import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.controller.fragment.PersonalCenterFragment;
+import cn.ucai.fulicenter.model.utils.L;
 
 public class MainActivity extends AppCompatActivity implements
         RadioGroup.OnCheckedChangeListener {
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
+        fragmentVp.setCurrentItem(1);
         ((RadioButton)rgFooter.getChildAt(index)).setChecked(true);
     }
 
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case  R.id.rb_Boutique:
                 index = 1;
+                L.e("main","Botique");
                 break;
             case R.id.rb_Category:
                 index = 2;
