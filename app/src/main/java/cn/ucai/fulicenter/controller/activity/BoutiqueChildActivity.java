@@ -11,6 +11,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.view.MFGT;
 
 public class BoutiqueChildActivity extends AppCompatActivity {
 
@@ -33,6 +34,6 @@ public class BoutiqueChildActivity extends AppCompatActivity {
 
     @OnClick(R.id.back)
     public void onClick() {
-        this.finish();
+        MFGT.finish(this);
     }
 }

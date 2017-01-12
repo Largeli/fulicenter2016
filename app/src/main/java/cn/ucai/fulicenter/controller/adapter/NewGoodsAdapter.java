@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.controller.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
+import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
+import cn.ucai.fulicenter.model.utils.L;
 
 /**
  * Created by Administrator on 2017/1/10 0010.
@@ -90,18 +94,27 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder parentholder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder parentholder, final int position) {
         if (position == getItemCount() - 1) {
             FooterViewHolder holder = (FooterViewHolder) parentholder;
             holder.tvfooter.setText(isMore?"上拉加载更多":"没有更多数据");
             return;
         }
         ContactViewHolder holder = (ContactViewHolder) parentholder;
-        NewGoodsBean contact = arrayList.get(position);
+        final NewGoodsBean contact = arrayList.get(position);
         holder.tvName.setText(contact.getGoodsName());
         holder.tvMuch.setText(contact.getCurrencyPrice());
         model.downloadnewgoodsImage(context,contact.getGoodsImg(),R.drawable.nopic,holder.ivAvatar);
         //Log.e("main",)
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(context, GoodsDetailsActivity.class);
+                intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,arrayList.get(position).getGoodsId());
+                L.e("main","goodId"+arrayList.get(position).getGoodsId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
