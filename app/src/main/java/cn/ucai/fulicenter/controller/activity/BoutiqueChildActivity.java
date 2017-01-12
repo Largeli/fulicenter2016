@@ -33,6 +33,6 @@ public class BoutiqueChildActivity extends AppCompatActivity {
 
     @OnClick(R.id.back)
     public void onClick() {
-        finish();
+        this.finish();
     }
 }
