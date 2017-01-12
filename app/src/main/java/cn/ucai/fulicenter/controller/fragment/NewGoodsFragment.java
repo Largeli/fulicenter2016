@@ -106,7 +106,8 @@ public class NewGoodsFragment extends Fragment {
     }
 
     private void downloadNewgoodsList(final int action, int pageId) {
-        mModel.downloadContactList(getContext(), I.CAT_ID, pageId, new OnCompletionListener<NewGoodsBean[]>() {
+        int catId = getActivity().getIntent().getIntExtra(I.NewAndBoutiqueGoods.CAT_ID,I.CAT_ID);
+        mModel.downloadContactList(getContext(), catId, pageId, new OnCompletionListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 L.e("main","result.length="+result.length);

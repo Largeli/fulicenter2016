@@ -20,8 +20,9 @@
         </activity>
         <activity android:name=".controller.activity.LoginActivity" />
         <activity android:name=".controller.activity.RegisterActivity" />
-        <activity android:name=".controller.activity.MainActivity"></activity>
-        <activity android:name=".controller.activity.NewGoodsSecondaryActivity"></activity>
+        <activity android:name=".controller.activity.MainActivity" />
+        <activity android:name=".controller.activity.NewGoodsChildActivity" />
+        <activity android:name=".controller.activity.BoutiqueChildActivity"></activity>
     </application>
 
 </manifest>
