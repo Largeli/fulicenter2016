@@ -45,6 +45,7 @@
             android:gravity="center"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/iv_pirc"
             android:src="@mipmap/arrow_order_down"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -59,6 +60,7 @@
             android:gravity="center"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/iv_addTime"
             android:src="@mipmap/arrow_order_up"
             android:layout_width="0dp"
             android:layout_weight="1"

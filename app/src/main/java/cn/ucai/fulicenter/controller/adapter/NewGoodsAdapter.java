@@ -100,7 +100,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     int getPrice(String price) {
         int p = 0;
         p = Integer.valueOf(price.substring(price.indexOf("￥")+1)) ;
-        L.e("main","p="+p);
+     //   L.e("main","p="+p);
         return p;
     }
     public void setDragging(boolean dragging) {

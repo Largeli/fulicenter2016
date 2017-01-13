@@ -26,6 +26,13 @@ public class CategoryChildActivity extends AppCompatActivity {
     @BindView(R.id.iv_back_name)
     ImageView ivBackName;
 
+    boolean priceAsc = false;
+    boolean addTiemAsc = false;
+    @BindView(R.id.iv_pirc)
+    ImageView ivPirc;
+    @BindView(R.id.iv_addTime)
+    ImageView ivAddTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,17 +45,33 @@ public class CategoryChildActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time,R.id.iv_back_name})
+    @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time, R.id.iv_back_name})
     public void onClick(View view) {
+        int sortBy = I.SORT_BY_ADDTIME_ASC;
         switch (view.getId()) {
             case R.id.tv_category_child_pice:
-                mNewGoodsFragment.sortGoods(I.SORT_BY_PRICE_ASC);
+                if (priceAsc) {
+                    sortBy = I.SORT_BY_PRICE_DESC;
+                    ivPirc.setRotation(0);
+                } else {
+                    sortBy = I.SORT_BY_PRICE_ASC;
+                    ivPirc.setRotation(180);
+                }
+                priceAsc = !priceAsc;
                 break;
             case R.id.tv_category_child_time:
-                mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_DESC);
+                if (addTiemAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                    ivAddTime.setRotation(0);
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                    ivAddTime.setRotation(180);
+                }
+                addTiemAsc = !addTiemAsc;
                 break;
             case R.id.iv_back_name:
                 this.finish();
         }
+        mNewGoodsFragment.sortGoods(sortBy);
     }
 }
