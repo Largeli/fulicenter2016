@@ -6,8 +6,24 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.adapter.CategoryAdapter;
+import cn.ucai.fulicenter.model.bean.CategoryChildBean;
+import cn.ucai.fulicenter.model.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.model.net.IModelCategory;
+import cn.ucai.fulicenter.model.net.ModelCategory;
+import cn.ucai.fulicenter.model.net.OnCompletionListener;
+import cn.ucai.fulicenter.model.utils.ConvertUtils;
+import cn.ucai.fulicenter.model.utils.L;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +31,18 @@ import cn.ucai.fulicenter.R;
 public class CategoryFragment extends Fragment {
 
 
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.elv_category)
+    ExpandableListView elvCategory;
+    Unbinder unbinder;
+
+    CategoryAdapter mAdapter;
+    IModelCategory mModel;
+    ArrayList<CategoryGroupBean> GroupArrayList;
+    ArrayList<ArrayList<CategoryChildBean>> childArryList;
+
+    int groupCont;
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -23,8 +51,80 @@ public class CategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category, container, false);
+        L.e("main","Category");
+        View layout = inflater.inflate(R.layout.fragment_category, container, false);
+        unbinder = ButterKnife.bind(this, layout);
+        GroupArrayList = new ArrayList<>();
+        childArryList = new ArrayList<>();
+        mAdapter = new CategoryAdapter(getContext(), childArryList, GroupArrayList );
+        L.e("main","mAdapterfinsh");
+        initView(false);
+        initData();
+        L.e("main","setAdapter");
+        elvCategory.setAdapter(mAdapter);
+        L.e("main","setAdapterfinsh");
+        return layout;
     }
 
+    private void initData() {
+        mModel = new ModelCategory();
+        mModel.downData(getContext(), new OnCompletionListener<CategoryGroupBean[]>() {
+            @Override
+            public void onSuccess(CategoryGroupBean[] result) {
+                if (result != null) {
+                    initView(true);
+                    ArrayList<CategoryGroupBean> list =  ConvertUtils.array2List(result);
+                    GroupArrayList.addAll(list);
+                    L.e("main","GroupArrayList"+GroupArrayList.size());
+                    for(int i=0;i<list.size();i++) {
+                        downloadChildData(list.get(i).getId());
+                    }
+                }else {
+                    initView(false);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void downloadChildData(int id) {
+        mModel.downData(getContext(), id, new OnCompletionListener<CategoryChildBean[]>() {
+            @Override
+            public void onSuccess(CategoryChildBean[] result) {
+                groupCont++;
+                if (result != null) {
+                    ArrayList<CategoryChildBean> list = ConvertUtils.array2List(result);
+                    childArryList.add(list);
+
+                }
+                if (groupCont == GroupArrayList.size()) {
+                    L.e("main","groupcont ="+groupCont);
+                    mAdapter.initData(GroupArrayList,childArryList);
+                    L.e("main","chilarrr"+childArryList.size());
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                groupCont++;
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initView(boolean hasData) {
+      tvTitle.setVisibility(hasData?View.GONE:View.VISIBLE);
+        elvCategory.setVisibility(hasData?View.VISIBLE:View.GONE);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

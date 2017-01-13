@@ -86,7 +86,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         tvGoodsEnlishName.setText(result.getGoodsEnglishName());
         tvGoodsPich.setText(result.getCurrencyPrice());
         salv.startPlayLoop(indicator,getAlbumUrl(result),getAlbumCount(result));
-        wv.loadDataWithBaseURL(null,result.getGoodsBrief(),I.TEXT_HTML,I.UTF_8,null);
+        wv.loadDataWithBaseURL(null,result.getGoodsBrief(),"text/txt",I.UTF_8,null);
     }
 
     private int getAlbumCount(GoodsDetailsBean goods) {
