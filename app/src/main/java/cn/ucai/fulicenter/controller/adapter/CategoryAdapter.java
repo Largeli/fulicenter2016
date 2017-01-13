@@ -15,7 +15,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.model.bean.CategoryChildBean;
 import cn.ucai.fulicenter.model.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
-import cn.ucai.fulicenter.model.utils.L;
+import cn.ucai.fulicenter.view.MFGT;
 
 /**
  * Created by Administrator on 2017/1/13 0013.
@@ -53,8 +53,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public CategoryChildBean getChild(int groupPosition, int childPosition) {
         if (mChlidBean != null && mChlidBean.get(groupPosition) != null) {
-            L.e("main","childsize="+mChlidBean.size());
-            L.e("main","mChlidBean.get(groupPosition)="+mChlidBean.get(groupPosition).size());
+          //  L.e("main","childsize="+mChlidBean.size());
+           // L.e("main","mChlidBean.get(groupPosition)="+mChlidBean.get(groupPosition).size());
             return mChlidBean.get(groupPosition).get(childPosition);
         }
         return null;
@@ -91,7 +91,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder vh = null;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.item_category_child, null);
@@ -102,6 +102,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }
         ImageLoader.downloadImg(context, vh.ivChildAvatar,getChild(groupPosition,childPosition).getImageUrl());
         vh.tvChildTitle.setText(getChild(groupPosition,childPosition).getName());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MFGT.gotoCategoryChild(context,mChlidBean.get(groupPosition).get(childPosition).getId());
+            }
+        });
         return convertView;
     }
 
@@ -116,8 +122,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         mGroupBean.addAll(groupArrayList);
         mChlidBean.clear();
         mChlidBean.addAll(childArryList);
-        L.e("Main",mChlidBean.size()+"chlid");
-        L.e("Main",mGroupBean.size()+"group");
+      //  L.e("Main",mChlidBean.size()+"chlid");
+     //   L.e("Main",mGroupBean.size()+"group");
         notifyDataSetChanged();
     }
 

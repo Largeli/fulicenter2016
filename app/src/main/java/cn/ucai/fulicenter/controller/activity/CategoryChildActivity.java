@@ -10,6 +10,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.application.I;
+import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
 public class CategoryChildActivity extends AppCompatActivity {
 
@@ -19,20 +21,27 @@ public class CategoryChildActivity extends AppCompatActivity {
     TextView tvCategoryChildTime;
     @BindView(R.id.fl_category_child)
     FrameLayout flCategoryChild;
-
+    NewGoodsFragment mNewGoodsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_child);
         ButterKnife.bind(this);
+        mNewGoodsFragment = new NewGoodsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_category_child,mNewGoodsFragment)
+                .commit();
+
     }
 
     @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_category_child_pice:
+                mNewGoodsFragment.sortGoods(I.SORT_BY_PRICE_ASC);
                 break;
             case R.id.tv_category_child_time:
+                mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_DESC);
                 break;
         }
     }

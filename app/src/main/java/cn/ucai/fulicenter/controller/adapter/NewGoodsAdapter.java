@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
@@ -70,6 +72,37 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         return isDragging;
     }
 
+    public void sortGoods(final int sortBy) {
+        Collections.sort(arrayList, new Comparator<NewGoodsBean>() {
+            @Override
+            public int compare(NewGoodsBean leftBean, NewGoodsBean rightBean) {
+                int result = 0;
+                switch (sortBy) {
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result = (int) (leftBean.getAddTime() - rightBean.getAddTime());
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result = (int) (rightBean.getAddTime() - leftBean.getAddTime());
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        result=getPrice(leftBean.getCurrencyPrice())-getPrice(rightBean.getCurrencyPrice());
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        result=getPrice(rightBean.getCurrencyPrice())-getPrice(leftBean.getCurrencyPrice());
+                        break;
+                }
+                return result;
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    int getPrice(String price) {
+        int p = 0;
+        p = Integer.valueOf(price.substring(price.indexOf("￥")+1)) ;
+        L.e("main","p="+p);
+        return p;
+    }
     public void setDragging(boolean dragging) {
         isDragging = dragging;
         notifyDataSetChanged();
