@@ -41,7 +41,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mChlidBean != null && mChlidBean.get(groupPosition) != null ? mChlidBean.size() : 0;
+        return mChlidBean != null && mChlidBean.get(groupPosition) != null ? mChlidBean.get(groupPosition).size() : 0;
     }
 
     @Override
@@ -53,6 +53,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public CategoryChildBean getChild(int groupPosition, int childPosition) {
         if (mChlidBean != null && mChlidBean.get(groupPosition) != null) {
+            L.e("main","childsize="+mChlidBean.size());
+            L.e("main","mChlidBean.get(groupPosition)="+mChlidBean.get(groupPosition).size());
             return mChlidBean.get(groupPosition).get(childPosition);
         }
         return null;

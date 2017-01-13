@@ -43,6 +43,7 @@ public class CategoryFragment extends Fragment {
     ArrayList<ArrayList<CategoryChildBean>> childArryList;
 
     int groupCont;
+
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -77,7 +78,8 @@ public class CategoryFragment extends Fragment {
                     GroupArrayList.addAll(list);
                     L.e("main","GroupArrayList"+GroupArrayList.size());
                     for(int i=0;i<list.size();i++) {
-                        downloadChildData(list.get(i).getId());
+                        childArryList.add(null);
+                        downloadChildData(list.get(i).getId(),i);
                     }
                 }else {
                     initView(false);
@@ -91,14 +93,14 @@ public class CategoryFragment extends Fragment {
         });
     }
 
-    private void downloadChildData(int id) {
+    private void downloadChildData(int id,final int index) {
         mModel.downData(getContext(), id, new OnCompletionListener<CategoryChildBean[]>() {
             @Override
             public void onSuccess(CategoryChildBean[] result) {
                 groupCont++;
                 if (result != null) {
                     ArrayList<CategoryChildBean> list = ConvertUtils.array2List(result);
-                    childArryList.add(list);
+                    childArryList.set(index,list);
 
                 }
                 if (groupCont == GroupArrayList.size()) {
@@ -110,7 +112,7 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-                groupCont++;
+                //groupCont++;
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
