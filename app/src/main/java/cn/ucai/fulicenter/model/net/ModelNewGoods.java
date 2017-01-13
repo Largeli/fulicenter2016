@@ -17,12 +17,22 @@ public class ModelNewGoods implements IModelNewGoods {
     @Override
     public void downloadContactList(Context context, int cartIn, int pageId, OnCompletionListener<NewGoodsBean[]> listener) {
         OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(context);
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
-                .addParam(I.NewAndBoutiqueGoods.CAT_ID,""+cartIn)
-                .addParam(I.PAGE_ID,pageId+"")
-                .addParam(I.PAGE_SIZE,10+"")
-                .targetClass(NewGoodsBean[].class)
-                .execute(listener);
+        if (cartIn == 0) {
+            utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
+                    .addParam(I.NewAndBoutiqueGoods.CAT_ID,""+cartIn)
+                    .addParam(I.PAGE_ID,pageId+"")
+                    .addParam(I.PAGE_SIZE,10+"")
+                    .targetClass(NewGoodsBean[].class)
+                    .execute(listener);
+        }else {
+            utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
+                    .addParam(I.NewAndBoutiqueGoods.CAT_ID,""+cartIn)
+                    .addParam(I.PAGE_ID,pageId+"")
+                    .addParam(I.PAGE_SIZE,10+"")
+                    .targetClass(NewGoodsBean[].class)
+                    .execute(listener);
+        }
+
     }
 
     @Override

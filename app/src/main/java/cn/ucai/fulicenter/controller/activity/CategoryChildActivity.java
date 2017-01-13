@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -22,6 +23,9 @@ public class CategoryChildActivity extends AppCompatActivity {
     @BindView(R.id.fl_category_child)
     FrameLayout flCategoryChild;
     NewGoodsFragment mNewGoodsFragment;
+    @BindView(R.id.iv_back_name)
+    ImageView ivBackName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +33,12 @@ public class CategoryChildActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mNewGoodsFragment = new NewGoodsFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_category_child,mNewGoodsFragment)
+                .add(R.id.fl_category_child, mNewGoodsFragment)
                 .commit();
 
     }
 
-    @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time})
+    @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time,R.id.iv_back_name})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_category_child_pice:
@@ -43,6 +47,8 @@ public class CategoryChildActivity extends AppCompatActivity {
             case R.id.tv_category_child_time:
                 mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_DESC);
                 break;
+            case R.id.iv_back_name:
+                this.finish();
         }
     }
 }
