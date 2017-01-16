@@ -24,7 +24,7 @@ import cn.ucai.fulicenter.controller.adapter.NewGoodsAdapter;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
-import cn.ucai.fulicenter.model.net.ModelNewGoods;
+import cn.ucai.fulicenter.model.bean.ModelNewGoods;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 

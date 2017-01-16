@@ -1,10 +1,11 @@
-package cn.ucai.fulicenter.model.net;
+package cn.ucai.fulicenter.model.bean;
 
 import android.content.Context;
 import android.widget.ImageView;
 
 import cn.ucai.fulicenter.controller.application.I;
-import cn.ucai.fulicenter.model.bean.NewGoodsBean;
+import cn.ucai.fulicenter.model.net.IModelNewGoods;
+import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
 import cn.ucai.fulicenter.model.utils.OkHttpUtils;
 
