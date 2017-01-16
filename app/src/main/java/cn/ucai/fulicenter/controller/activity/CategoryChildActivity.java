@@ -7,12 +7,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.model.bean.CategoryChildBean;
+import cn.ucai.fulicenter.view.CatFileterButton;
 
 public class CategoryChildActivity extends AppCompatActivity {
 
@@ -32,6 +36,8 @@ public class CategoryChildActivity extends AppCompatActivity {
     ImageView ivPirc;
     @BindView(R.id.iv_addTime)
     ImageView ivAddTime;
+    @BindView(R.id.cfb)
+    CatFileterButton cfb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,8 @@ public class CategoryChildActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_category_child, mNewGoodsFragment)
                 .commit();
-
+        ArrayList<CategoryChildBean> list = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.DATA);
+        cfb.initCatFileterButton(getIntent().getStringExtra(I.CategoryChild.NAME),list);
     }
 
     @OnClick({R.id.tv_category_child_pice, R.id.tv_category_child_time, R.id.iv_back_name})
