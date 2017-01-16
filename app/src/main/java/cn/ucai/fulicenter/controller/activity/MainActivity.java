@@ -15,12 +15,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.controller.fragment.CartFragment;
 import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.controller.fragment.PersonalCenterFragment;
 import cn.ucai.fulicenter.model.utils.L;
+import cn.ucai.fulicenter.view.MFGT;
 
 public class MainActivity extends AppCompatActivity implements
         RadioGroup.OnCheckedChangeListener {
@@ -110,7 +112,11 @@ public class MainActivity extends AppCompatActivity implements
                 index = 3;
                 break;
             case  R.id.rb_Personal_center:
-                index = 4;
+                if (FuLiCenterApplication.getUser() == null) {
+                   MFGT.gotoLogin(this);
+                }else {
+                    index = 4;
+                }
                 break;
         }
         if (fragmentVp.getCurrentItem() == index) {

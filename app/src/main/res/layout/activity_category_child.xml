@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="cn.ucai.fulicenter.controller.activity.CategoryChildActivity"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:background="@color/orange"
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -14,24 +14,19 @@
         <ImageView
             android:id="@+id/iv_back_name"
             android:src="@drawable/back"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent" />
-        <TextView
-            android:id="@+id/tv_Nmae"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:text="tv_Name"/>
-        <ImageView
-            android:id="@+id/iv_back_time"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:src="@drawable/arrow2_down"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        <cn.ucai.fulicenter.view.CatFileterButton
+            android:id="@+id/cfb"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="分类"
+            android:textColor="@color/btn_white_normal"
+            android:drawableRight="@drawable/arrow2_up"
+            />
+    </RelativeLayout>
     <LinearLayout
         android:background="@color/orange"
         android:layout_width="match_parent"

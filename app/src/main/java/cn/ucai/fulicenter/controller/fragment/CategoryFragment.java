@@ -58,12 +58,13 @@ public class CategoryFragment extends Fragment {
         GroupArrayList = new ArrayList<>();
         childArryList = new ArrayList<>();
         mAdapter = new CategoryAdapter(getContext(), childArryList, GroupArrayList );
-        L.e("main","mAdapterfinsh");
+       // L.e("main","mAdapterfinsh");
         initView(false);
+        elvCategory.setGroupIndicator(null);
         initData();
-        L.e("main","setAdapter");
+       // L.e("main","setAdapter");
         elvCategory.setAdapter(mAdapter);
-        L.e("main","setAdapterfinsh");
+      //  L.e("main","setAdapterfinsh");
         return layout;
     }
 
@@ -104,9 +105,9 @@ public class CategoryFragment extends Fragment {
 
                 }
                 if (groupCont == GroupArrayList.size()) {
-                    L.e("main","groupcont ="+groupCont);
+                   // L.e("main","groupcont ="+groupCont);
                     mAdapter.initData(GroupArrayList,childArryList);
-                    L.e("main","chilarrr"+childArryList.size());
+                   // L.e("main","chilarrr"+childArryList.size());
                 }
             }
 
