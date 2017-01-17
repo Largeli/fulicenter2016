@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.controller.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -26,6 +27,7 @@ import cn.ucai.fulicenter.view.MFGT;
 
 public class MainActivity extends AppCompatActivity implements
         RadioGroup.OnCheckedChangeListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     Context mContext;
     @BindView(R.id.rg_footer)
     RadioGroup rgFooter;
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
-        fragmentVp.setCurrentItem(1);
+        fragmentVp.setCurrentItem(0);
         ((RadioButton)rgFooter.getChildAt(index)).setChecked(true);
     }
 
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case  R.id.rb_Boutique:
                 index = 1;
-                L.e("main","Botique");
+                //L.e("main","Botique");
                 break;
             case R.id.rb_Category:
                 index = 2;
@@ -114,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements
             case  R.id.rb_Personal_center:
                 if (FuLiCenterApplication.getUser() == null) {
                    MFGT.gotoLogin(this);
-                }else {
-                    index = 4;
                 }
+                index = 4;
                 break;
         }
         if (fragmentVp.getCurrentItem() == index) {
@@ -124,5 +125,17 @@ public class MainActivity extends AppCompatActivity implements
         }
         fragmentVp.setCurrentItem(index);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        L.e(TAG,"onResume,currentIndex="+currentindex+",index="+index
+        +",user="+FuLiCenterApplication.getUser());
+       fragmentVp.setCurrentItem(index);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

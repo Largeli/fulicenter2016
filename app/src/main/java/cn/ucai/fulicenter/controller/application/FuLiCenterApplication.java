@@ -25,6 +25,9 @@ public class FuLiCenterApplication extends Application {
         return user;
     }
 
+    public static void removeUser(){
+        FuLiCenterApplication.user = null;
+    }
     public static void setUser(User user) {
         FuLiCenterApplication.user = user;
     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
@@ -46,15 +47,16 @@ public class PersonalCenterFragment extends Fragment {
 
     private void inintData() {
         User user = FuLiCenterApplication.getUser();
-        if(user!=null){
+        if (user != null) {
             loadUserInfo(user);
-        }else {
+        } else {
             MFGT.gotoLogin(getActivity());
         }
     }
 
     private void loadUserInfo(User user) {
-        ImageLoader.downloadImg(getContext(),mIvUserAvatar,user.getAvatarPath() );
+       // ImageLoader.downloadImg(getContext(), mIvUserAvatar, user.getAvatarPath());
+        ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),getContext(),mIvUserAvatar);
         mTvUserName.setText(user.getMuserNick());
     }
 
@@ -62,5 +64,26 @@ public class PersonalCenterFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @OnClick({R.id.iv_user_Avatar, R.id.tv_user_name, R.id.tv_set})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_user_Avatar:
+            case R.id.tv_user_name:
+            case R.id.tv_set:
+                if (FuLiCenterApplication.getUser()!=null){
+                    MFGT.gotoSettings(getActivity());
+                }else{
+                    MFGT.gotoLogin(getActivity());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        inintData();
     }
 }

@@ -3,6 +3,8 @@ package cn.ucai.fulicenter.model.net;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
+
 /**
  * Created by Administrator on 2017/1/16 0016.
  */
@@ -30,4 +32,8 @@ public class SharedPrefrenceUtils {
             return preferences.getString(SHARE_PREFRENCE_NAME_USERNAME,null);
         }
 
+    public void removeUser() {
+        preferences.edit().remove(SHARE_PREFRENCE_NAME_USERNAME).commit();
+        FuLiCenterApplication.removeUser();
+    }
 }
