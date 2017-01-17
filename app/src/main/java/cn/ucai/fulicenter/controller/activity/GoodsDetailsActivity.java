@@ -17,7 +17,6 @@ import cn.ucai.fulicenter.model.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.model.net.IModelGoodes;
 import cn.ucai.fulicenter.model.net.ModelGoodes;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
-import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.MFGT;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -54,9 +53,9 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_goods_details);
         ButterKnife.bind(this);
         goodId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, I.CAT_ID);
-        L.e("main","mgoodid"+goodId);
+       // L.e("main","mgoodid"+goodId);
         if (goodId == I.CAT_ID) {
-            L.e("main","000");
+          //  L.e("main","000");
             MFGT.finish(this);
         } else {
             initData();

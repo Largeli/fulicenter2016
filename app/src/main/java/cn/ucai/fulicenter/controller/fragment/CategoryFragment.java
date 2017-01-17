@@ -23,7 +23,6 @@ import cn.ucai.fulicenter.model.net.IModelCategory;
 import cn.ucai.fulicenter.model.net.ModelCategory;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
-import cn.ucai.fulicenter.model.utils.L;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +51,7 @@ public class CategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        L.e("main","Category");
+      //  L.e("main","Category");
         View layout = inflater.inflate(R.layout.fragment_category, container, false);
         unbinder = ButterKnife.bind(this, layout);
         GroupArrayList = new ArrayList<>();
@@ -77,7 +76,7 @@ public class CategoryFragment extends Fragment {
                     initView(true);
                     ArrayList<CategoryGroupBean> list =  ConvertUtils.array2List(result);
                     GroupArrayList.addAll(list);
-                    L.e("main","GroupArrayList"+GroupArrayList.size());
+                   // L.e("main","GroupArrayList"+GroupArrayList.size());
                     for(int i=0;i<list.size();i++) {
                         childArryList.add(null);
                         downloadChildData(list.get(i).getId(),i);

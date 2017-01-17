@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,9 @@ import butterknife.Unbinder;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.adapter.NewGoodsAdapter;
 import cn.ucai.fulicenter.controller.application.I;
+import cn.ucai.fulicenter.model.bean.ModelNewGoods;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
-import cn.ucai.fulicenter.model.bean.ModelNewGoods;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 
@@ -111,7 +110,7 @@ public class NewGoodsFragment extends Fragment {
             public void onSuccess(NewGoodsBean[] result) {
               //  L.e("main","result.length="+result.length);
                 if (result != null && result.length > 0) {
-                    Log.e("main","111");
+                  //  Log.e("main","111");
                         ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                         switch (action) {
                             case ACTION_DOWNLOAD:

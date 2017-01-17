@@ -16,7 +16,6 @@ import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.CommonUtils;
-import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.ResultUtils;
 import cn.ucai.fulicenter.view.MFGT;
 
@@ -93,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s,Result.class);
-                    L.e(TAG,"resutl="+result);
+                    //L.e(TAG,"resutl="+result);
                     if (result.isRetMsg()) {
                         CommonUtils.showLongToast(R.string.register_success );
                         MFGT.finish(RegisterActivity.this);

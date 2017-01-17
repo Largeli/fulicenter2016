@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.Result;
 import cn.ucai.fulicenter.model.bean.User;
+import cn.ucai.fulicenter.model.dao.UserDao;
 import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
@@ -65,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             login(username,password);
         }
     }
-    private void login(String username,String password){
+    private void login(final String username, String password){
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.logining));
         model = new ModeUser();
@@ -78,7 +79,14 @@ public class LoginActivity extends AppCompatActivity {
                     if (result != null) {
                         if (result.isRetMsg()) {
                             User user = (User) result.getRetData();
-                            SharedPrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
+                            boolean savaUser = UserDao.getInstance().savaUser(user);
+                            if (savaUser) {
+                                SharedPrefrenceUtils.getInstance(LoginActivity.this).saveUser(username);
+                                L.e(TAG,"savaUser="+savaUser);
+                            }
+                           // L.e(TAG,"savaUser="+savaUser);
+                           // SharedPrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
+                            CommonUtils.showLongToast("Login");
                              MFGT.finish(LoginActivity.this);
                         }else {
                             if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {

@@ -18,7 +18,6 @@ import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
-import cn.ucai.fulicenter.model.utils.L;
 
 /**
  * Created by Administrator on 2017/1/10 0010.
@@ -144,7 +143,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent intent  = new Intent(context, GoodsDetailsActivity.class);
                 intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,arrayList.get(position).getGoodsId());
-                L.e("main","goodId"+arrayList.get(position).getGoodsId());
+             //   L.e("main","goodId"+arrayList.get(position).getGoodsId());
                 context.startActivity(intent);
             }
         });
