@@ -1,7 +1,6 @@
 package cn.ucai.fulicenter.controller.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -133,9 +132,5 @@ public class MainActivity extends AppCompatActivity implements
        fragmentVp.setCurrentItem(index);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-    }
 }

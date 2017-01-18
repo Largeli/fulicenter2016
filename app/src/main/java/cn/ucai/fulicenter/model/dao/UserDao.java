@@ -28,6 +28,7 @@ public class UserDao {
         return instance;
     }
     public boolean savaUser(User user){
+        FuLiCenterApplication.setUser(user);
         return DBManager.getInstance().saveUser(user);
     }
 

@@ -85,6 +85,7 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_nick"
         android:padding="10dp"
         android:layout_marginTop="3dp"
         android:background="@color/white"

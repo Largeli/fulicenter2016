@@ -25,7 +25,8 @@
         <activity android:name=".controller.activity.BoutiqueChildActivity" />
         <activity android:name=".controller.activity.GoodsDetailsActivity" />
         <activity android:name=".controller.activity.CategoryChildActivity" />
-        <activity android:name=".controller.activity.SettingActivity"></activity>
+        <activity android:name=".controller.activity.SettingActivity" />
+        <activity android:name=".controller.activity.UpdataNickActivity"></activity>
     </application>
 
 </manifest>
