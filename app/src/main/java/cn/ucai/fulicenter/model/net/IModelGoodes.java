@@ -12,4 +12,5 @@ import cn.ucai.fulicenter.model.bean.MessageBean;
 public interface IModelGoodes {
     void downloadList(Context context, int goodsId, OnCompletionListener<GoodsDetailsBean> listener);
     void isCollect(Context context, int goodsId, String username, OnCompletionListener<MessageBean> listener);
+    void setCollect(Context context,int goodsId,String username,int action,OnCompletionListener<MessageBean> listener);
 }
