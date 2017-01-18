@@ -20,7 +20,6 @@ import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.net.SharedPrefrenceUtils;
 import cn.ucai.fulicenter.model.utils.CommonUtils;
-import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.ResultUtils;
 import cn.ucai.fulicenter.view.MFGT;
 
@@ -75,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String s) {
                 if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s,User.class);
-                    L.e(TAG,"result="+result);
+                  //  L.e(TAG,"result="+result);
                     if (result != null) {
                         if (result.isRetMsg()) {
                             User user = (User) result.getRetData();
                             boolean savaUser = UserDao.getInstance().savaUser(user);
                             if (savaUser) {
                                 SharedPrefrenceUtils.getInstance(LoginActivity.this).saveUser(username);
-                                L.e(TAG,"savaUser="+savaUser);
+                             //   L.e(TAG,"savaUser="+savaUser);
                             }
                            // L.e(TAG,"savaUser="+savaUser);
                            // SharedPrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
@@ -108,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 dialog.dismiss();
-                L.e(TAG,"error="+error);
+              //  L.e(TAG,"error="+error);
                 CommonUtils.showLongToast(error);
             }
         });

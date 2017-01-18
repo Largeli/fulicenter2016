@@ -57,6 +57,7 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_name"
         android:padding="10dp"
         android:layout_marginTop="3dp"
         android:background="@color/white"
