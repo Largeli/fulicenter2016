@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.File;
 
 import cn.ucai.fulicenter.controller.application.I;
+import cn.ucai.fulicenter.model.bean.MessageBean;
 import cn.ucai.fulicenter.model.utils.MD5;
 import cn.ucai.fulicenter.model.utils.OkHttpUtils;
 
@@ -54,6 +55,15 @@ public class ModeUser implements IModelUser {
                 .addFile2(file)
                 .post()
                 .targetClass(String.class)
+                .execute(listener);
+    }
+
+    @Override
+    public void collectCount(Context context,String username, OnCompletionListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.Collect.USER_NAME,username)
+                .targetClass(MessageBean.class)
                 .execute(listener);
     }
 }
