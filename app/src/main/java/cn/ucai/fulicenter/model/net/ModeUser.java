@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.io.File;
 
-import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.CartBean;
 import cn.ucai.fulicenter.model.bean.CollectBean;
@@ -126,17 +125,13 @@ public class ModeUser implements IModelUser {
 
     @Override
     public void updateCart(Context context, int action, String username, int goodsId, int count,int cartId, OnCompletionListener<MessageBean> listener) {
-        if (FuLiCenterApplication.getMyCartList().containsKey(goodsId)) {
-            if(action ==I.ACTION_CART_DEL){
-                deltCart(context,cartId,listener);
-            }else {
-                updateCart(context,cartId,listener);
-            }
-
-        }else {
+        if (action ==I.ACTION_CART_ADD) {
             addCart(context,username,goodsId,1,listener);
-        }
-
+        }else if(action ==I.ACTION_CART_DEL){
+                deltCart(context,cartId,listener);
+                }else {
+                updateCart(context,cartId,listener);
+                }
     }
 
 
