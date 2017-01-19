@@ -30,6 +30,10 @@
             android:layout_centerInParent="true"
             android:textColor="@color/black"/>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_refreshing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl"
         android:layout_width="match_parent"

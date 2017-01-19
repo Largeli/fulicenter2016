@@ -18,6 +18,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.CollectBean;
+import cn.ucai.fulicenter.model.bean.ModelNewGoods;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
 
 /**
@@ -34,10 +35,9 @@ public class CollectAdapter extends RecyclerView.Adapter {
     boolean isDragging;
     IModelNewGoods model;
 
-    public CollectAdapter(ArrayList<CollectBean> arrayList, Context context, IModelNewGoods model) {
+    public CollectAdapter(ArrayList<CollectBean> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
-        this.model = model;
     }
 
     public void initData(ArrayList<CollectBean> arrayList) {
@@ -96,6 +96,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
         CollectViewHolder holder = (CollectViewHolder) parentholder;
         final CollectBean contact = arrayList.get(position);
         holder.tvGoosName.setText(contact.getGoodsName());
+        model = new ModelNewGoods();
         model.downloadnewgoodsImage(context, contact.getGoodsImg(), R.drawable.nopic, holder.ivGoodsThumb);
         //Log.e("main",)
         holder.itemView.setOnClickListener(new View.OnClickListener() {

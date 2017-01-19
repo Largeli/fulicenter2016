@@ -3,7 +3,10 @@ package cn.ucai.fulicenter.controller.activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -11,47 +14,79 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.adapter.CollectAdapter;
 import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.CollectBean;
+import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
+import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 import cn.ucai.fulicenter.model.utils.L;
+import cn.ucai.fulicenter.model.utils.SpaceItemDecoration;
 
 public class ColletactActivity extends AppCompatActivity {
     private static final String TAG = ColletactActivity.class.getSimpleName();
-    IModelUser model;
-    int pageId = 1;
+
     @BindView(R.id.rlv_collect)
     RecyclerView rlvCollect;
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
+    IModelUser model;
+    int pageId = 1;
+    GridLayoutManager gm;
+    CollectAdapter mAdapter;
+    @BindView(R.id.tv_refreshing)
+    TextView tvRefreshing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colletact);
         ButterKnife.bind(this);
-        initData();
+        User user = FuLiCenterApplication.getUser();
+        if (user == null) {
+            finish();
+        }else {
+            initView();
+            initData(I.ACTION_DOWNLOAD);
+            setPullDownListener();
+            setPullUpListener();
+        }
     }
 
-    private void initData() {
+    private void initData(final int action) {
         model = new ModeUser();
         model.getcollect(this, FuLiCenterApplication.getUser().getMuserName(), pageId, I.PAGE_SIZE_DEFAULT, new OnCompletionListener<CollectBean[]>() {
             @Override
             public void onSuccess(CollectBean[] result) {
-                if (result == null) {
-
-                } else {
+                srl.setRefreshing(false);
+                tvRefreshing.setVisibility(View.GONE);
+                mAdapter.setMore(true);
+                if (result != null && result.length > 0) {
                     ArrayList<CollectBean> list = ConvertUtils.array2List(result);
-                    L.e(TAG, "list=" + list.size());
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        mAdapter.initData(list);
+                    }else {
+                        mAdapter.addData(list);
+                    }
+                    if (list.size() < I.PAGE_ID_DEFAULT) {
+                        mAdapter.setMore(false);
+                    }
+                }
+                else {
+                    mAdapter.setMore(false);
                 }
             }
 
             @Override
             public void onError(String error) {
+                srl.setRefreshing(false);
+                tvRefreshing.setVisibility(View.GONE);
+                mAdapter.setMore(false);
+                CommonUtils.showLongToast(error);
                 L.e(TAG, "err0r=" + error);
             }
         });
@@ -65,8 +100,40 @@ public class ColletactActivity extends AppCompatActivity {
                 getResources().getColor(R.color.google_yellow)
 
         );
+        gm = new GridLayoutManager(this, I.COLUM_NUM);
+        rlvCollect.addItemDecoration(new SpaceItemDecoration(12));
+        rlvCollect.setLayoutManager(gm);
+        rlvCollect.setHasFixedSize(true);
+        mAdapter = new CollectAdapter(new ArrayList<CollectBean>(), this);
+        rlvCollect.setAdapter(mAdapter);
     }
 
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                tvRefreshing.setVisibility(View.VISIBLE);
+                pageId = 1;
+                initData(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+    private void setPullUpListener(){
+        rlvCollect.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPostion = gm.findLastVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPostion == mAdapter.getItemCount() - 1
+                        && mAdapter.isMore()) {
+                    pageId++;
+                    initData(I.ACTION_PULL_UP);
+                }
+            }
+        });
+    }
     @OnClick(R.id.iv_collect_back)
     public void onClick() {
         this.finish();
