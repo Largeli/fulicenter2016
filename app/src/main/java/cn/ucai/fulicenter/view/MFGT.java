@@ -3,12 +3,14 @@ package cn.ucai.fulicenter.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.controller.activity.CategoryChildActivity;
+import cn.ucai.fulicenter.controller.activity.ColletactActivity;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.controller.activity.LoginActivity;
 import cn.ucai.fulicenter.controller.activity.RegisterActivity;
@@ -76,6 +78,10 @@ public class MFGT {
         intent.putExtra("nick",nick);
         activity.startActivityForResult(intent,I.REQUEST_CODE_NICK);
        // startActivity(activity, UpdataNickActivity.class);
+    }
+
+    public static void gotoColletace(FragmentActivity activity) {
+        startActivity(activity, ColletactActivity.class);
     }
 }
 

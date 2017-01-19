@@ -54,7 +54,7 @@ public class PersonalCenterFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_personal_center, container, false);
         unbinder = ButterKnife.bind(this, layout);
         inintData();
-        getCollectCount();
+       getCollectCount();
         return layout;
     }
 
@@ -75,6 +75,7 @@ public class PersonalCenterFragment extends Fragment {
     }
 
     private void loadCollectCount(String count) {
+        L.e(TAG,"msg="+count);
         tvCollrctNumber.setText(String.valueOf(count));
     }
     private void getCollectCount(){
@@ -95,6 +96,7 @@ public class PersonalCenterFragment extends Fragment {
                     @Override
                     public void onError(String error) {
                         loadCollectCount("0");
+                        L.e(TAG,"error="+error);
                     }
                 });
     }
@@ -104,7 +106,7 @@ public class PersonalCenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.iv_user_Avatar, R.id.tv_user_name, R.id.tv_set})
+    @OnClick({R.id.iv_user_Avatar, R.id.tv_user_name, R.id.tv_set,R.id.ll_personal_collect})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_user_Avatar:
@@ -116,7 +118,13 @@ public class PersonalCenterFragment extends Fragment {
                     MFGT.gotoLogin(getActivity());
                 }
                 break;
+            case R.id.ll_personal_collect:
+                gotocollect();
         }
+    }
+
+    private void gotocollect() {
+        MFGT.gotoColletace(getActivity());
     }
 
     @Override

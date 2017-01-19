@@ -57,6 +57,7 @@
             android:background="#20000000"
             >
             <LinearLayout
+                android:id="@+id/ll_personal_collect"
                 android:layout_width="0dp"
                 android:layout_weight="8"
                 android:layout_height="wrap_content"

@@ -3,7 +3,8 @@
     package="cn.ucai.fulicenter">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".controller.application.FuLiCenterApplication"
         android:allowBackup="true"
@@ -26,7 +27,8 @@
         <activity android:name=".controller.activity.GoodsDetailsActivity" />
         <activity android:name=".controller.activity.CategoryChildActivity" />
         <activity android:name=".controller.activity.SettingActivity" />
-        <activity android:name=".controller.activity.UpdataNickActivity"></activity>
+        <activity android:name=".controller.activity.UpdataNickActivity" />
+        <activity android:name=".controller.activity.ColletactActivity"></activity>
     </application>
 
 </manifest>
