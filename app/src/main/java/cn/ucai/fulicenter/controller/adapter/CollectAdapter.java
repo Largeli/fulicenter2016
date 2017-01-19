@@ -16,10 +16,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
+import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.application.I;
 import cn.ucai.fulicenter.model.bean.CollectBean;
+import cn.ucai.fulicenter.model.bean.MessageBean;
 import cn.ucai.fulicenter.model.bean.ModelNewGoods;
+import cn.ucai.fulicenter.model.bean.User;
+import cn.ucai.fulicenter.model.net.IModelGoodes;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
+import cn.ucai.fulicenter.model.net.ModelGoodes;
+import cn.ucai.fulicenter.model.net.OnCompletionListener;
 
 /**
  * Created by Administrator on 2017/1/10 0010.
@@ -34,10 +40,14 @@ public class CollectAdapter extends RecyclerView.Adapter {
     boolean isMore = true;
     boolean isDragging;
     IModelNewGoods model;
-
+    IModelGoodes modelGoodes;
+    User user;
     public CollectAdapter(ArrayList<CollectBean> arrayList, Context context) {
-        this.arrayList = arrayList;
+        this.arrayList = new ArrayList<>();
+        arrayList.addAll(arrayList);
         this.context = context;
+        modelGoodes = new ModelGoodes();
+        user = FuLiCenterApplication.getUser();
     }
 
     public void initData(ArrayList<CollectBean> arrayList) {
@@ -87,7 +97,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder parentholder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder parentholder, final int position) {
         if (position == getItemCount() - 1) {
             FooterViewHolder holder = (FooterViewHolder) parentholder;
             holder.tvfooter.setText(isMore ? "上拉加载更多" : "没有更多数据");
@@ -105,6 +115,27 @@ public class CollectAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(context, GoodsDetailsActivity.class);
                 intent.putExtra(I.GoodsDetails.KEY_GOODS_ID, arrayList.get(position).getGoodsId());
                 context.startActivity(intent);
+            }
+        });
+        holder.ivCollectDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modelGoodes.setCollect(context, arrayList.get(position).getGoodsId(),
+                        user.getMuserName(), I.ACTION_DELETE_COLLECT,
+                        new OnCompletionListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null) {
+                                    arrayList.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
             }
         });
     }
@@ -147,4 +178,11 @@ public class CollectAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
     }
+    public void removeItem(int goodsId){
+        if (goodsId != 0) {
+            arrayList.remove(new CollectBean(goodsId));
+            notifyDataSetChanged();
+        }
+    }
+
 }

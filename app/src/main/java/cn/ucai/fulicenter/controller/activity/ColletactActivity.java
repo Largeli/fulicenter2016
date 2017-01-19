@@ -1,5 +1,9 @@
 package cn.ucai.fulicenter.controller.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -41,12 +45,14 @@ public class ColletactActivity extends AppCompatActivity {
     @BindView(R.id.tv_refreshing)
     TextView tvRefreshing;
 
+    UpdateCollectReceiver mReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colletact);
         ButterKnife.bind(this);
         User user = FuLiCenterApplication.getUser();
+        mReceiver = new UpdateCollectReceiver();
         if (user == null) {
             finish();
         }else {
@@ -54,7 +60,14 @@ public class ColletactActivity extends AppCompatActivity {
             initData(I.ACTION_DOWNLOAD);
             setPullDownListener();
             setPullUpListener();
+            setReceiverListener();
         }
+    }
+
+    private void setReceiverListener() {
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_COLLECT);
+        registerReceiver(mReceiver,filter);
+
     }
 
     private void initData(final int action) {
@@ -134,8 +147,26 @@ public class ColletactActivity extends AppCompatActivity {
             }
         });
     }
+
+    class UpdateCollectReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int goodsId = intent.getIntExtra(I.Collect.GOODS_ID,0);
+            L.e(TAG,"onReceive,goodIs="+goodsId);
+            mAdapter.removeItem(goodsId);
+        }
+    }
+
     @OnClick(R.id.iv_collect_back)
     public void onClick() {
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+        }
     }
 }
