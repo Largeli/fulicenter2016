@@ -19,6 +19,8 @@ import cn.ucai.fulicenter.model.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.model.bean.MessageBean;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelGoodes;
+import cn.ucai.fulicenter.model.net.IModelUser;
+import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.ModelGoodes;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.CommonUtils;
@@ -48,6 +50,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     FlowIndicator indicator;
 
     IModelGoodes mModle;
+    IModelUser modelUser;
     int goodId;
     @BindView(R.id.wv)
     WebView wv;
@@ -127,8 +130,28 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 setCollectListener();
                 break;
             case R.id.iv_cart:
+                setCart();
                 break;
         }
+    }
+
+    private void setCart() {
+        User user = FuLiCenterApplication.getUser();
+        modelUser = new ModeUser();
+        modelUser.updateCart(this, I.ACTION_CART_ADD, user.getMuserName(), goodId, 1, 0,
+                new OnCompletionListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null) {
+                            CommonUtils.showLongToast(R.string.add_goods_success);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
     }
 
     private void setCollectListener() {
