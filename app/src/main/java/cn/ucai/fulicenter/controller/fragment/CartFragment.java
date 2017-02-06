@@ -32,6 +32,7 @@ import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
+import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.view.MFGT;
@@ -62,6 +63,8 @@ public class CartFragment extends Fragment {
     @BindView(R.id.tv_cart_save_price)
     TextView tvCartSavePrice;
     UpdateCartReceiver mReceiver;
+    int sumPrice = 0;
+    int payPrice  = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class CartFragment extends Fragment {
     private void setReceiverListener() {
         mReceiver = new UpdateCartReceiver();
         IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
-        getContext().registerReceiver(mReceiver,filter);
+        getContext().registerReceiver(mReceiver, filter);
     }
 
     private void setListener() {
@@ -149,37 +152,50 @@ public class CartFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setPrice();
-        L.e("main","setPrice");
+        L.e("main", "setPrice");
     }
 
     private void setPrice() {
-        int sumPrice = 0;
+         sumPrice = 0;
+        payPrice = 0;
         int savePrice = 0;
         if (mArryList != null && mArryList.size() > 0) {
             for (CartBean cart : mArryList) {
                 GoodsDetailsBean goods = cart.getGoods();
                 if (cart.isChecked() && goods != null) {
-                    sumPrice +=cart.getCount()*getPrice(goods.getCurrencyPrice());
-                    savePrice += cart.getCount()*(getPrice(goods.getCurrencyPrice())-getPrice(goods.getRankPrice()));
+                    sumPrice += cart.getCount() * getPrice(goods.getCurrencyPrice());
+                    savePrice += cart.getCount() * (getPrice(goods.getCurrencyPrice()) - getPrice(goods.getRankPrice()));
                 }
             }
         }
-        tvCartSumPrice.setText("合计:￥"+sumPrice);
-        L.e(TAG,"sumPrice="+sumPrice);
-        tvCartSavePrice.setText("节省:￥"+savePrice);
-        L.e(TAG,"savePrice="+savePrice);
+        tvCartSumPrice.setText("合计:￥" + sumPrice);
+       // L.e(TAG, "sumPrice=" + sumPrice);
+        tvCartSavePrice.setText("节省:￥" + savePrice);
+       // L.e(TAG, "savePrice=" + savePrice);
         mAdapter.notifyDataSetChanged();
+        payPrice = sumPrice-savePrice;
     }
 
     int getPrice(String price) {
-        int p=0;
-        p = Integer.valueOf(price.substring(price.indexOf("￥")+1));
+        int p = 0;
+        p = Integer.valueOf(price.substring(price.indexOf("￥") + 1));
         return p;
     }
-    class UpdateCartReceiver extends BroadcastReceiver{
+
+    @OnClick(R.id.tv_cart_buy)
+    public void onBuClick() {
+        if (sumPrice > 0) {
+           L.e(TAG,"sumPrice="+sumPrice);
+            MFGT.gotoAccount(getActivity(),payPrice);
+        }else {
+            CommonUtils.showLongToast(R.string.order_nothing);
+        }
+    }
+
+    class UpdateCartReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            L.e(TAG,"onReceive");
+            L.e(TAG, "onReceive");
             setPrice();
         }
     }

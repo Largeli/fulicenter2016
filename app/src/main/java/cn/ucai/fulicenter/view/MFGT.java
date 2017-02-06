@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.activity.AccountActivity;
 import cn.ucai.fulicenter.controller.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.controller.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.controller.activity.ColletactActivity;
@@ -82,6 +83,12 @@ public class MFGT {
 
     public static void gotoColletace(FragmentActivity activity) {
         startActivity(activity, ColletactActivity.class);
+    }
+
+    public static void gotoAccount(FragmentActivity activity, int payPrice) {
+        Intent intent = new Intent(activity, AccountActivity.class);
+        intent.putExtra(I.Cart.PAY_PRICE,payPrice);
+        startActivity(activity,intent);
     }
 }
 
