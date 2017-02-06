@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <CheckBox
+        android:id="@+id/cbx_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"/>
+    <ImageView
+        android:id="@+id/iv_cart_avatar"
+        android:layout_toRightOf="@id/cbx_cart"
+        android:src="@drawable/nopic"
+        android:layout_width="80dp"
+        android:layout_height="60dp" />
+    <TextView
+        android:id="@+id/tv_cart_title"
+        android:text="趣味蛋糕模具"
+        android:textSize="18sp"
+        android:layout_toRightOf="@id/iv_cart_avatar"
+        android:ellipsize="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_cart_add"
+        android:src="@mipmap/add_cart"
+        android:layout_toRightOf="@id/iv_cart_avatar"
+        android:layout_below="@id/tv_cart_title"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_cart_number"
+        android:text="(1)"
+        android:layout_toRightOf="@id/iv_cart_add"
+        android:layout_below="@id/tv_cart_title"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_cart_del"
+        android:src="@mipmap/del_cart"
+        android:layout_toRightOf="@id/tv_cart_number"
+        android:layout_below="@id/tv_cart_title"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_cart_price"
+        android:text="￥140"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

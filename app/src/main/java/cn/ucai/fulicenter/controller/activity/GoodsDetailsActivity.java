@@ -150,7 +150,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(String error) {
-
+                        CommonUtils.showLongToast("失败");
                         }
                     });
         }else {

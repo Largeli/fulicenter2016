@@ -1,6 +1,10 @@
 package cn.ucai.fulicenter.controller.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,58 +23,69 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
+import cn.ucai.fulicenter.controller.adapter.CartAdapter;
 import cn.ucai.fulicenter.controller.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.application.I;
-import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.bean.CartBean;
+import cn.ucai.fulicenter.model.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModeUser;
 import cn.ucai.fulicenter.model.net.OnCompletionListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
+import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.view.MFGT;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CartFragment extends Fragment {
-    @BindView(R.id.srlBoutique)
-    SwipeRefreshLayout srlBoutique;
+    private static final String TAG = CartFragment.class.getSimpleName();
+    @BindView(R.id.srl)
+    SwipeRefreshLayout msrl;
     @BindView(R.id.tv_nothing)
-    TextView tvNomore;
-    @BindView(R.id.tvRefreshHint)
+    TextView tvnothing;
+    @BindView(R.id.tv_RefreshHint)
     TextView tvRefreshHint;
-    @BindView(R.id.rvBoutique)
-    RecyclerView rvBoutique;
+    @BindView(R.id.rv)
+    RecyclerView mRv;
 
     Unbinder unbinder;
 
     IModelUser mModel;
-    BoutiqueAdapter mAdapter;
+    CartAdapter mAdapter;
     LinearLayoutManager mLayoutManager;
-    ArrayList<BoutiqueBean> mArryList;
-    User user ;
+    ArrayList<CartBean> mArryList;
+    User user;
+    @BindView(R.id.tv_cart_sum_price)
+    TextView tvCartSumPrice;
+    @BindView(R.id.tv_cart_save_price)
+    TextView tvCartSavePrice;
+    UpdateCartReceiver mReceiver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_cart, container, false);
         unbinder = ButterKnife.bind(this, layout);
-        // Log.e("main", "lay");
         initView(layout);
-        // L.e("main", "initView");
         user = FuLiCenterApplication.getUser();
         iniData(I.ACTION_DOWNLOAD);
-        // L.e("main", "inidatafinsh");
         setListener();
+        setReceiverListener();
         return layout;
     }
 
+    private void setReceiverListener() {
+        mReceiver = new UpdateCartReceiver();
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
+        getContext().registerReceiver(mReceiver,filter);
+    }
+
     private void setListener() {
-        srlBoutique.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        msrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                srlBoutique.setRefreshing(true);
+                msrl.setRefreshing(true);
                 tvRefreshHint.setVisibility(View.VISIBLE);
                 iniData(I.ACTION_PULL_DOWN);
             }
@@ -80,24 +95,25 @@ public class CartFragment extends Fragment {
     private void iniData(final int action) {
         if (user == null) {
             MFGT.gotoLogin(getActivity());
-        }else {
+        } else {
             mModel.getCart(getContext(), user.getMuserName(),
                     new OnCompletionListener<CartBean[]>() {
                         @Override
                         public void onSuccess(CartBean[] result) {
-                            srlBoutique.setRefreshing(false);
+                            msrl.setRefreshing(false);
                             tvRefreshHint.setVisibility(View.GONE);
                             //  L.e("main", result.length + "");
                             if (result != null && result.length > 0) {
                                 ArrayList<CartBean> list = ConvertUtils.array2List(result);
+                                mArryList.addAll(list);
                                 if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
-                                  //  mAdapter.initData(list);
+                                    mAdapter.initData(list);
                                 } else {
-                                   // mAdapter.addData(list);
+                                    mAdapter.addData(list);
                                 }
                             } else {
-                                rvBoutique.setVisibility(View.GONE);
-                                tvNomore.setVisibility(View.VISIBLE);
+                                mRv.setVisibility(View.GONE);
+                                tvnothing.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -113,11 +129,16 @@ public class CartFragment extends Fragment {
     private void initView(View layout) {
         mModel = new ModeUser();
         mArryList = new ArrayList<>();
-       // mAdapter = new BoutiqueAdapter(getContext(), mArryList, mModel);
+        mAdapter = new CartAdapter(getContext(), mArryList);
+        L.e(TAG, "mAdapter,mArrayList=" + mArryList.toString());
         mLayoutManager = new LinearLayoutManager(getContext());
-        rvBoutique.setLayoutManager(mLayoutManager);
-        rvBoutique.setAdapter(mAdapter);
+        mRv.setHasFixedSize(true);
+        msrl.setVisibility(View.VISIBLE);
+        tvnothing.setVisibility(View.GONE);
+        mRv.setLayoutManager(mLayoutManager);
+        mRv.setAdapter(mAdapter);
     }
+
     @OnClick(R.id.tv_nothing)
     public void onClick() {
         // L.e("main", "onclick");
@@ -125,8 +146,50 @@ public class CartFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setPrice();
+        L.e("main","setPrice");
+    }
+
+    private void setPrice() {
+        int sumPrice = 0;
+        int savePrice = 0;
+        if (mArryList != null && mArryList.size() > 0) {
+            for (CartBean cart : mArryList) {
+                GoodsDetailsBean goods = cart.getGoods();
+                if (cart.isChecked() && goods != null) {
+                    sumPrice +=cart.getCount()*getPrice(goods.getCurrencyPrice());
+                    savePrice += cart.getCount()*(getPrice(goods.getCurrencyPrice())-getPrice(goods.getRankPrice()));
+                }
+            }
+        }
+        tvCartSumPrice.setText("合计:￥"+sumPrice);
+        L.e(TAG,"sumPrice="+sumPrice);
+        tvCartSavePrice.setText("节省:￥"+savePrice);
+        L.e(TAG,"savePrice="+savePrice);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    int getPrice(String price) {
+        int p=0;
+        p = Integer.valueOf(price.substring(price.indexOf("￥")+1));
+        return p;
+    }
+    class UpdateCartReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            L.e(TAG,"onReceive");
+            setPrice();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (mReceiver != null) {
+            getContext().unregisterReceiver(mReceiver);
+        }
     }
 }
