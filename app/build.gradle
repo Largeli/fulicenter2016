@@ -21,11 +21,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.android.support:support-v4:24.2.1'
@@ -37,4 +36,22 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.0'
     compile 'com.squareup.okio:okio:1.1.0'
     compile 'com.google.code.gson:gson:2.7'
+    compile project(':lib:bdwallet_pay_sdk')
+    compile project(':lib:pingpp')
+    compile project(':lib:pingpp_one')
+    compile files('src/main/libs/MobCommons-2016.1222.1756.jar')
+    compile files('src/main/libs/MobTools-2016.1222.1756.jar')
+    compile files('src/main/libs/ShareSDK-Core-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Email-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Facebook-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-QQ-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-QZone-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-ShortMessage-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-SinaWeibo-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-TencentWeibo-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Twitter-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Wechat-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Wechat-Core-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Wechat-Favorite-2.8.0.jar')
+    compile files('src/main/libs/ShareSDK-Wechat-Moments-2.8.0.jar')
 }
